@@ -9,15 +9,27 @@
 ## Build
 
 ```shell
-git submodule update --init --recursive --depth=1
-xmake f -m releasedbg
-xmake
+git submodule update --init --recursive --depth=1 && xmake
+```
+
+- And then install(`./build/artifact/SKSE/Data/<PLUGIN_NAME>.dll`)
+
+NOTE: The `MyPlugin` is `PLUGIN_NAME` value in cxx/xmake.lua.
+
+```shell
+xmake install -o ./build/artifact MyPlugin
 ```
 
 ## Language server(For `clangd`)
 
 ```shell
 xmake project -k compile_commands --lsp=clangd --outputdir=build
+```
+
+## Change build mode
+
+```shell
+xmake f -m release
 ```
 
 ## Format

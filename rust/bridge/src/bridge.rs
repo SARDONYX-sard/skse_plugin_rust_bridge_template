@@ -20,10 +20,10 @@ pub(crate) mod ffi {
 }
 
 pub fn bridge_init() {
-    crate::log_trace!("bridge_init()");
+    crate::log_trace!("[rust] bridge_init()");
 
-    crate::log_info!("Current time: {}", ffi::get_calendar_time());
-    ffi::message_box("Hello from Rust!");
+    crate::log_info!("[From Rust] Current time: {}", ffi::get_calendar_time());
+    // ffi::message_box("Hello from Rust!");
 }
 
 #[cfg(test)]

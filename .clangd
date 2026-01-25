@@ -1,5 +1,11 @@
 CompileFlags:
-  Add: ["-std:c++latest"]
+  CompilationDatabase: "build"
+  Add:
+    # See: https://github.com/llvm/llvm-project/pull/160030/changes
+    - "-std:c++latest"
+
+    - "-Wno-c++14-extensions"
+    - "-Wno-c++17-extensions"
 
 Diagnostics:
   UnusedIncludes: Strict
@@ -19,7 +25,13 @@ Diagnostics:
     Remove: [
         #
         bugprone-easily-swappable-parameters,
+        cppcoreguidelines-avoid-c-arrays,
         cppcoreguidelines-avoid-magic-numbers,
+        cppcoreguidelines-avoid-non-const-global-variables,
+        cppcoreguidelines-narrowing-conversions, # duplicated bugprone lint
+        cppcoreguidelines-owning-memory, # In Skyrim, there are times when a memory leak is necessary.
+        cppcoreguidelines-pro-type-reinterpret-cast,
+        cppcoreguidelines-pro-type-vararg,
         modernize-use-trailing-return-type,
         performance-enum-size,
       ]

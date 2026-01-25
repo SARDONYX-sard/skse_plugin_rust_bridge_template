@@ -1,5 +1,20 @@
 ---@meta
 
+---@alias Mode
+---| '"mode.asan"'
+---| '"mode.check"'
+---| '"mode.coverage"'
+---| '"mode.debug"'
+---| '"mode.lsan"'
+---| '"mode.minsizerel"'
+---| '"mode.msan"'
+---| '"mode.profile"'
+---| '"mode.release"'
+---| '"mode.releasedbg"'
+---| '"mode.tsan"'
+---| '"mode.ubsan"'
+---| '"mode.valgrind"'
+
 ---Add build rules like debug/release
 ---
 ---@param ...
@@ -214,7 +229,7 @@ function on_build(callback) end
 function target(name, callback) end
 
 ---Check the current build mode
----@param mode "debug"|"release"
+---@param mode Mode
 ---@return boolean
 function is_mode(mode) end
 
@@ -243,9 +258,23 @@ function add_headerfiles(header) end
 ---Set precompiled header
 ---@param header string
 function set_pcxxheader(header) end
+
 ---Set precompiled header
 ---@param kind "static"|"dynamic"
 function set_kind(kind) end
+
+---Set default build mode
+---@param mode Mode
+function set_defaultmode(mode) end
+
+---Set version e.g., `"0.1.0"`
+---@param version string
+function set_version(version) end
+
+---Set license. e.g., `"MIT OR APache2.0"`
+---@param license string
+function set_license(license) end
+
 ---Set precompiled header
 ---@param lang "cxx14"
 ---@param lang2 string|nil
