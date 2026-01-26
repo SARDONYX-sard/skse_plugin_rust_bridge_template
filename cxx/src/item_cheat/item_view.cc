@@ -1,6 +1,5 @@
 #include <SKSEMenuFramework.h>
 
-#include "RE/F/FormTypes.h"
 #include "item_cheat/item_model.hh"
 #include "item_cheat/item_view.hh"
 
@@ -13,9 +12,9 @@ namespace item_cheat::view {
         static int                 addCount = 1;
         static float               tableHeight = 400.0f;
 
-        static std::string filterPlugin;
-        static std::string filterFormType;
-        static std::string filterFormList;
+        static std::array<char, 100> filterPlugin;
+        static std::array<char, 50>  filterFormType;
+        static std::array<char, 256> filterFormList;
     }
 
     void Render() {
@@ -31,11 +30,7 @@ namespace item_cheat::view {
         // --- Plugin search + dropdown ---
         ImGuiMCP::TextUnformatted("Plugin: ");
         ImGuiMCP::SameLine();
-        static std::array<char, 100> pluginBuffer{};
-        std::strncpy(pluginBuffer.data(), filterPlugin.c_str(), pluginBuffer.size());
-        if (ImGuiMCP::InputText("##pluginSearch", pluginBuffer.data(), pluginBuffer.size())) {
-            filterPlugin = pluginBuffer.data();
-        }
+        ImGuiMCP::InputText("##pluginSearch", filterPlugin.data(), filterPlugin.size());
 
         ImGuiMCP::SameLine();
 
@@ -44,7 +39,7 @@ namespace item_cheat::view {
             const auto& plugins = GetPlugins();
 
             for (const auto& [i, plugin] : std::views::enumerate(plugins)) {
-                if (!filterPlugin.empty() && plugin.name.find(filterPlugin) == std::string::npos) {
+                if (!filterPlugin.empty() && plugin.name.find(filterPlugin.data()) == std::string::npos) {
                     continue;
                 }
 
@@ -59,18 +54,14 @@ namespace item_cheat::view {
         // --- FormType search + dropdown ---
         ImGuiMCP::Text("Type: ");
         ImGuiMCP::SameLine();
-        static std::array<char, 50> formTypeBuffer{};
-        std::strncpy(formTypeBuffer.data(), filterFormType.c_str(), formTypeBuffer.size());
-        if (ImGuiMCP::InputText("##formTypeSearch", formTypeBuffer.data(), formTypeBuffer.size())) {
-            filterFormType = formTypeBuffer.data();
-        }
+        ImGuiMCP::InputText("##formTypeSearch", filterFormType.data(), filterFormType.size());
 
         ImGuiMCP::SameLine();
 
         const char* formTypePreview = ToFormTypeName(view::selectedFormType);
         if (ImGuiMCP::BeginCombo("##formTypeDropdown", formTypePreview)) {
             for (auto& [type, label] : kFormTypeList) {
-                if (!filterFormType.empty() && std::string(label).find(filterFormType) == std::string::npos) {
+                if (!filterFormType.empty() && std::string_view(label).find(filterFormType.data()) == std::string::npos) {
                     continue;
                 }
 
@@ -84,11 +75,7 @@ namespace item_cheat::view {
         // --- Form List Search ---
         ImGuiMCP::Text("Form List: ");
         ImGuiMCP::SameLine();
-        static std::array<char, 256> formListBuffer{};
-        std::strncpy(formListBuffer.data(), filterFormList.c_str(), formListBuffer.size());
-        if (ImGuiMCP::InputText("##formListSearch", formListBuffer.data(), formListBuffer.size())) {
-            filterFormList = formListBuffer.data();
-        }
+        ImGuiMCP::InputText("##formListSearch", filterFormList.data(), filterFormList.size());
 
         // -- Get all button
         ImGuiMCP::SameLine();
@@ -101,7 +88,7 @@ namespace item_cheat::view {
                 if (view::selectedFormType != RE::FormType::None && view::selectedFormType != item.formType) {
                     matches = false;
                 }
-                if (!filterFormList.empty() && item.name.find(filterFormList) == std::string::npos) {
+                if (!filterFormList.empty() && item.name.find(filterFormList.data()) == std::string::npos) {
                     matches = false;
                 }
 
@@ -120,11 +107,10 @@ namespace item_cheat::view {
 
             for (auto& item : GetItems()) {
                 bool matches = true;
-
                 if (selectedFormType != RE::FormType::None && selectedFormType != item.formType) {
                     matches = false;
                 }
-                if (!filterFormList.empty() && item.name.find(filterFormList) == std::string::npos) {
+                if (!filterFormList.empty() && item.name.find(filterFormList.data()) == std::string::npos) {
                     matches = false;
                 }
 

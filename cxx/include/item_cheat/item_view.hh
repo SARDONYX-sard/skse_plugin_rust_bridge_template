@@ -1,6 +1,5 @@
 #pragma once
 
-#include "RE/F/FormTypes.h"
 #include <SKSEMenuFramework.h>
 
 namespace item_cheat::view {
@@ -18,9 +17,6 @@ namespace item_cheat::view {
         { RE::FormType::KeyMaster, "Key" },
         { RE::FormType::Misc, "Misc" },
 
-        { RE::FormType::Outfit, "Outfit" },
-        { RE::FormType::Note, "Note" },
-        { RE::FormType::SoulGem, "SoulGem" },
         { RE::FormType::NPC, "NPC" },
     };
 

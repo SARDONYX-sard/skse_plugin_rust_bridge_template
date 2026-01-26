@@ -120,15 +120,6 @@ void __stdcall ui::Example2::RenderWindow() {
 }
 
 void __stdcall ui::Example3::Render() {
-    static ImGuiMCP::ImGuiTableFlags flags =
-        ImGuiMCP::ImGuiTableFlags_Resizable |
-        ImGuiMCP::ImGuiTableFlags_Reorderable |
-        ImGuiMCP::ImGuiTableFlags_Hidable | ImGuiMCP::ImGuiTableFlags_RowBg |
-        ImGuiMCP::ImGuiTableFlags_BordersOuter |
-        ImGuiMCP::ImGuiTableFlags_BordersV |
-        ImGuiMCP::ImGuiTableFlags_NoBordersInBody |
-        ImGuiMCP::ImGuiTableFlags_ScrollY;
-
     if (Example3::filter) {
         Example3::filter->Draw();
     }

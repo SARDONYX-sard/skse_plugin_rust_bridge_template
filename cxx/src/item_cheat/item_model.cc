@@ -62,9 +62,6 @@ namespace item_cheat::model {
                     RE::FormType::Book,
                     RE::FormType::Scroll,
                     RE::FormType::Misc,
-                    RE::FormType::Outfit,
-                    RE::FormType::Note,
-                    RE::FormType::SoulGem,
                     RE::FormType::NPC)) {
                 g_items.emplace_back(bound, form->formType.get(), std::string{ name });
             }
