@@ -3,8 +3,8 @@
 namespace item_cheat::model {
 
     namespace {
-        static std::vector<PluginEntry> g_plugins;         // All esm,esp list
-        static std::vector<ItemEntry>   g_items;           // selected plugin esp forms
+        static std::vector<PluginEntry> g_plugins{};       // All esm,esp list
+        static std::vector<ItemEntry>   g_items{};         // selected plugin esp forms
         static RE::TESBoundObject*      g_selectedItem{};  // current selected table cell item
     }
 
@@ -47,11 +47,22 @@ namespace item_cheat::model {
                 continue;
             }
 
-            const char* name = bound->GetName();
+            auto trim = [](const std::string_view& s) {
+                size_t start = 0;
+                while (start < s.size() && std::isspace(static_cast<unsigned char>(s[start]))) ++start;
+                size_t end = s.size();
+                while (end > start && std::isspace(static_cast<unsigned char>(s[end - 1]))) --end;
+                return s.substr(start, end - start);
+            };
 
+            const char* name = bound->GetName();
             if (!name) {
                 continue;
             }
+
+            auto trimmed = trim(name);
+            if (trimmed.empty())
+                continue;
 
             if (bound->formType.any(
                     RE::FormType::Weapon,

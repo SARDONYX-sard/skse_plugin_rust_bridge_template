@@ -20,6 +20,24 @@ namespace item_cheat::view {
         { RE::FormType::NPC, "NPC" },
     };
 
+    // Unlike the CommonLibSSE-NG implementation, set `None` to `All`.
+    inline const char* FormTypeToString(RE::FormType type) {
+        for (auto& [t, name] : kFormTypeList) {
+            if (t == type) {
+                return name;
+            }
+        }
+        return "All";
+    }
+    inline RE::FormType StringToFormType(const std::string& str) {
+        for (auto& [t, name] : kFormTypeList) {
+            if (str == name) {
+                return t;
+            }
+        }
+        return RE::FormType::None;
+    }
+
     constexpr const char* ToFormTypeName(RE::FormType type) {
         for (auto& [t, name] : kFormTypeList) {
             if (t == type) {
@@ -31,4 +49,12 @@ namespace item_cheat::view {
 
     void Render();
 
+    // --- UI Filters / state ---
+    inline std::array<char, 100> filterPlugin{};
+    inline std::array<char, 50>  filterFormType{};
+    inline std::array<char, 256> filterFormList{};
+
+    inline std::atomic_int64_t selectedPlugin{ -1 };
+    inline int                 addCount{ 1 };
+    inline float               tableHeight{ 400.0f };
 }

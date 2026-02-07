@@ -2,7 +2,7 @@ CompileFlags:
   CompilationDatabase: "build"
   Add:
     # See: https://github.com/llvm/llvm-project/pull/160030/changes
-    - "-std:c++latest"
+    - "/std:c++latest"
 
     - "-Wno-c++14-extensions"
     - "-Wno-c++17-extensions"

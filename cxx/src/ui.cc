@@ -4,6 +4,8 @@
 // ref: https://github.com/QTR-Modding/SKSE-Menu-Framework-3-Example/blob/master/src/UI.cpp
 #include <ranges>
 
+#include "SKSE/API.h"
+#include "cmd_cheat/cmd_view.hh"
 #include "item_cheat/item_view.hh"
 #include "ui.hh"
 
@@ -13,19 +15,21 @@ void ui::Register() {
         return;
     }
 
-    Example3::filter = new ImGuiMCP::ImGuiTextFilter();
-    SKSEMenuFramework::SetSection(Configuration::MOD_NAME);
-    SKSEMenuFramework::AddSectionItem("Add Item", item_cheat::view::Render);
+    SKSEMenuFramework::SetSection(std::string{ SKSE::GetPluginName() });
 
-    SKSEMenuFramework::AddSectionItem("Font Awesome", Example4::Render);
-    SKSEMenuFramework::AddSectionItem("Folder Example/Example 2", Example2::Render);
-    ui::Example2::ExampleWindow = SKSEMenuFramework::AddWindow(Example2::RenderWindow, true);
-    SKSEMenuFramework::AddSectionItem("Folder Example/Example 3", Example3::Render);
+    SKSEMenuFramework::AddSectionItem("Add Cheat", item_cheat::view::Render);
+    SKSEMenuFramework::AddSectionItem("Cmd Cheat", cmd_cheat::view::Render);
 
-    SKSEMenuFramework::AddSectionItem("Example 5", Example5::Render);
-    SKSEMenuFramework::AddHudElement(Example5::RenderOverlay);
-    SKSEMenuFramework::AddInputEvent(Example5::OnInput);
-    ui::Example5::NonPausingWindow = SKSEMenuFramework::AddWindow(Example5::RenderWindow, false);
+    // SKSEMenuFramework::AddSectionItem("Folder Example/Example 2", Example2::Render);
+    // ui::Example2::ExampleWindow = SKSEMenuFramework::AddWindow(Example2::RenderWindow, true);
+
+    // Example3::filter = new ImGuiMCP::ImGuiTextFilter();
+    // SKSEMenuFramework::AddSectionItem("Folder Example/Example 3", Example3::Render);
+
+    // SKSEMenuFramework::AddSectionItem("Example 5", Example5::Render);
+    // SKSEMenuFramework::AddHudElement(Example5::RenderOverlay);
+    // SKSEMenuFramework::AddInputEvent(Example5::OnInput);
+    // ui::Example5::NonPausingWindow = SKSEMenuFramework::AddWindow(Example5::RenderWindow, false);
 }
 
 void ui::Example1::LookupForm() {
@@ -136,8 +140,7 @@ void __stdcall ui::Example3::Render() {
                 ImGuiMCP::TableSetColumnIndex(column);
                 std::array<char, 32> buf{};
 
-                int fail_w = sprintf(buf.data(), "Hello %d,%d", column, row);
-
+                int fail_w = sprintf_s(buf.data(), buf.size(), "Hello %d,%d", column, row);
                 if (fail_w && Example3::filter && Example3::filter->PassFilter(buf.data())) {
                     FontAwesome::PushSolid();
                     ImGuiMCP::Text(reinterpret_cast<const char*>(CheckMark));
@@ -233,12 +236,11 @@ void __stdcall ui::Example5::RenderWindow() {
     ImGuiMCP::SetNextWindowPos(windowPos, ImGuiMCP::ImGuiCond_Appearing, { 0, 0 });
     ImGuiMCP::SetNextWindowSize(windowSize, ImGuiMCP::ImGuiCond_Appearing);
 
-    ImGuiMCP::Begin("My First Overlay Window##MenuEntiryFromMod", nullptr,
+    ImGuiMCP::Begin("My First Overlay Window##MenuEntityFromMod", nullptr,
         ImGuiMCP::ImGuiWindowFlags_NoCollapse);
     ImGuiMCP::Text("Chinese characters (requires chinese font): %s", u8"测试");
 
-    // You can load only once if you want, but the texture loader creates a cache
-    // of your texutre;
+    // You can load only once if you want, but the texture loader creates a cache of your texture;
     auto texture = SKSEMenuFramework::LoadTexture(
         "Data\\interface\\unlit-bomb.svg", { 100, 100 });
     auto texture2 =

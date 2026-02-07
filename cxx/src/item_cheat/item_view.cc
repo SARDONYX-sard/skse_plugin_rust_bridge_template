@@ -3,27 +3,15 @@
 #include "item_cheat/item_model.hh"
 #include "item_cheat/item_view.hh"
 
+#include "persistence.hh"
 #include "ui.hh"
 
 namespace item_cheat::view {
-
-    namespace {
-        static std::atomic_int64_t selectedPlugin = -1;
-        static int                 addCount = 1;
-        static float               tableHeight = 400.0f;
-
-        static std::array<char, 100> filterPlugin;
-        static std::array<char, 50>  filterFormType;
-        static std::array<char, 256> filterFormList;
-    }
-
     void Render() {
         using namespace item_cheat::model;
 
         if (GetPlugins().empty()) {
-            if (ImGuiMCP::Button("Load Plugins")) {
-                BuildPluginList();
-            }
+            BuildPluginList();
             return;
         }
 
@@ -46,6 +34,7 @@ namespace item_cheat::view {
                 if (ImGuiMCP::Selectable(plugin.name.c_str(), selectedPlugin == i)) {
                     selectedPlugin = i;
                     BuildItemList(plugin.file);
+                    skyrim_cheat::persistence::SaveAll();
                 }
             }
             ImGuiMCP::EndCombo();
@@ -60,13 +49,14 @@ namespace item_cheat::view {
 
         const char* formTypePreview = ToFormTypeName(view::selectedFormType);
         if (ImGuiMCP::BeginCombo("##formTypeDropdown", formTypePreview)) {
-            for (auto& [type, label] : kFormTypeList) {
+            for (auto& [type, label] : std::span{ kFormTypeList }) {
                 if (!filterFormType.empty() && std::string_view(label).find(filterFormType.data()) == std::string::npos) {
                     continue;
                 }
 
                 if (ImGuiMCP::Selectable(label, view::selectedFormType == type)) {
                     view::selectedFormType = type;
+                    skyrim_cheat::persistence::SaveAll();
                 }
             }
             ImGuiMCP::EndCombo();
@@ -126,6 +116,7 @@ namespace item_cheat::view {
                         GetSelectedItem() == item.object,
                         ImGuiMCP::ImGuiSelectableFlags_SpanAllColumns)) {
                     SelectItem(item.object);
+                    skyrim_cheat::persistence::SaveAll();
                 }
 
                 ImGuiMCP::TableSetColumnIndex(1);
@@ -142,9 +133,12 @@ namespace item_cheat::view {
 
             if (ImGuiMCP::Button("Add")) {
                 AddSelectedItem(addCount);
+                skyrim_cheat::persistence::SaveAll();
             }
             ImGuiMCP::SameLine();
-            ImGuiMCP::SliderInt("Amount", &addCount, 1, 999999);
+            if (ImGuiMCP::SliderInt("Amount", &addCount, 1, 999999)) {
+                skyrim_cheat::persistence::SaveAll();
+            };
         }
     }
 

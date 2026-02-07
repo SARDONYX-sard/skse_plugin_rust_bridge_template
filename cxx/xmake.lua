@@ -1,10 +1,14 @@
-local PLUGIN_NAME<const> = "MyPlugin" -- dll name
-local AUTHOR_NAME<const> = "Author Name"
+-- Please change this for your settings.
+local PLUGIN_NAME<const> = "RustBridgeTemplate" -- dll name
+local AUTHOR_NAME<const> = "SARDONYX" -- NOTE: Including a space seems to break the rc.
 local DESCRIPTION<const> = "Plugin Description"
 local VERSION<const> = "0.1.0"
 local LICENSE<const> = "Unlicense OR Apache-2.0"
+--
 
+set_config("rex_toml", true)
 includes("../extern/CommonLibVR_NG")
+
 includes("../extern/SKSEMenuFramework")
 includes("../rust/bridge")
 
