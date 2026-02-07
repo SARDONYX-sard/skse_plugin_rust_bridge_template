@@ -17,8 +17,8 @@ void ui::Register() {
 
     SKSEMenuFramework::SetSection(std::string{ SKSE::GetPluginName() });
 
-    SKSEMenuFramework::AddSectionItem("Add Cheat", item_cheat::view::Render);
-    SKSEMenuFramework::AddSectionItem("Cmd Cheat", cmd_cheat::view::Render);
+    SKSEMenuFramework::AddSectionItem("Item Cheat", item_cheat::view::Render);
+    SKSEMenuFramework::AddSectionItem("Auto Command", cmd_cheat::view::Render);
 
     // SKSEMenuFramework::AddSectionItem("Folder Example/Example 2", Example2::Render);
     // ui::Example2::ExampleWindow = SKSEMenuFramework::AddWindow(Example2::RenderWindow, true);
